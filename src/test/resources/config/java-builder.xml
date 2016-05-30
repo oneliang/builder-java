@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE builder SYSTEM "builder.dtd">
+<builder>
+	<configuration-class type="com.oneliang.tools.builder.java.base.JavaConfigurationForEclipse"/>
+	<configuration name="projectWorkspace" value="/D:/Dandelion/java/gitWorkspace"/>
+	<configuration name="projectMain" value="builder"/>
+	<configuration name="buildOutput" value="./builder-gen"/>
+	<configuration name="jarKeystore" value="/D:/Dandelion/tencent/key/debug.keystore" log="false"/>
+	<configuration name="jarStorePassword" value="android" log="false"/>
+	<configuration name="jarKeyPassword" value="android" log="false"/>
+	<configuration name="jarKeyAlias" value="androiddebugkey" log="false"/>
+	<configuration name="projectTaskNodeInsertName" value="buildJavaProject"/>
+
+	<handler name="clean" type="com.oneliang.tools.builder.java.handler.CleanHandler"/>
+	<handler name="compileJavaProject" type="com.oneliang.tools.builder.java.handler.CompileJavaProjectHandler" mode="more"/>
+	<handler name="buildJavaProject" type="com.oneliang.tools.builder.java.handler.JavaProjectHandler" mode="more">
+		<reference-handler-name value="compileJavaProject"/>
+	</handler>
+	<handler name="generateJar" type="com.oneliang.tools.builder.java.handler.GenerateJarHandler"/>
+
+	<task-node-insert name="clean">
+		<handler-name value="clean"/>
+	</task-node-insert>
+
+	<task-node-insert name="buildJavaProject">
+		<handler-name value="buildJavaProject"/>
+	</task-node-insert>
+
+	<task-node-insert name="generateJar">
+		<parent-name value="buildJavaProject"/>
+		<handler-name value="generateJar"/>
+	</task-node-insert>
+</builder>
