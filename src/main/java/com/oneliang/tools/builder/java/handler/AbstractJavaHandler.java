@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import com.oneliang.Constant;
 import com.oneliang.tools.builder.base.BuilderUtil;
+import com.oneliang.tools.builder.base.CacheHandler;
 import com.oneliang.tools.builder.base.Configuration;
 import com.oneliang.tools.builder.java.base.Java;
 import com.oneliang.tools.builder.java.base.JavaConfiguration;
