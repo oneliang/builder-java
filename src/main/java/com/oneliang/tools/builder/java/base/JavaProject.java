@@ -11,9 +11,6 @@ public class JavaProject extends Project{
 	public static final String JAR_FILE_MAPPING="jarFileMapping.properties";
 	public static final String JAVAC_SOURCE_FILE_LIST="javacSourceFileList";
 
-	protected static final String CLASSPATH=".classpath";
-	protected String classpath=null;
-
 	//use in building
 	private List<JavaProject> parentJavaProjectList=null;
 	protected List<String> compileClasspathList=null;
@@ -32,15 +29,6 @@ public class JavaProject extends Project{
 
 	public void initialize() {
 		super.initialize();
-		this.classpath=this.home+"/"+CLASSPATH;
-	}
-
-	/**
-	 * get classpath file
-	 * @return String
-	 */
-	public String getClasspath(){
-		return this.classpath;
 	}
 
 	/**

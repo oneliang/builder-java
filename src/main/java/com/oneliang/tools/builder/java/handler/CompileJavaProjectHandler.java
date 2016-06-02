@@ -1,7 +1,6 @@
 package com.oneliang.tools.builder.java.handler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.oneliang.Constant;
@@ -13,7 +12,9 @@ import com.oneliang.util.file.FileUtil;
 
 public class CompileJavaProjectHandler extends JavaProjectHandler {
 
-	protected List<CacheOption> getCacheOptionList() {
+	private boolean compileSuccess=false;
+
+	public boolean handle() {
 		FileUtil.createDirectory(this.javaProject.getClassesOutput());
 		FileUtil.createDirectory(this.javaProject.getCacheOutput());
 		String sourceFileCacheFullFilename=javaProject.getCacheOutput()+"/javaFileCache";
@@ -60,9 +61,13 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
 				}else{
 					result=true;
 				}
+				if(result){
+					compileSuccess=true;
+				}
 				return result;
 			}
 		};
-		return Arrays.asList(cacheOption);
+		this.dealWithCache(cacheOption);
+		return compileSuccess;
 	}
 }

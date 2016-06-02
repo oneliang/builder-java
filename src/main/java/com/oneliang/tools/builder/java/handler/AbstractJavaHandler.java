@@ -17,7 +17,7 @@ import com.oneliang.util.file.FileUtil.NoCacheFileProcessor;
 import com.oneliang.util.logging.Logger;
 import com.oneliang.util.logging.LoggerManager;
 
-public class AbstractJavaHandler extends CacheHandler {
+public abstract class AbstractJavaHandler extends CacheHandler {
 
 	protected static final Logger logger=LoggerManager.getLogger(AbstractJavaHandler.class);
 
@@ -77,9 +77,5 @@ public class AbstractJavaHandler extends CacheHandler {
 			this.javaConfiguration=(JavaConfiguration)configuration;
 			this.java=this.javaConfiguration.getJava();
 		}
-	}
-
-	protected List<CacheOption> getCacheOptionList() {
-		return null;
 	}
 }

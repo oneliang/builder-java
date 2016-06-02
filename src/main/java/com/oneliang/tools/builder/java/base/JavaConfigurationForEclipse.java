@@ -20,6 +20,8 @@ import com.oneliang.util.common.StringUtil;
 
 public class JavaConfigurationForEclipse extends JavaConfiguration implements Configuration.IDEInitializer,Configuration.ProjectInitializer{
 
+	protected static final String CLASSPATH=".classpath";
+
 	protected void initialize() {
 		this.ideInitializer=this;
 		this.projectInitializer=this;
@@ -35,7 +37,7 @@ public class JavaConfigurationForEclipse extends JavaConfiguration implements Co
 		while(!queue.isEmpty()){
 			JavaProject javaProject=queue.poll();
 			//read classpath
-			String classpath=javaProject.getClasspath();
+			String classpath=javaProject.getHome()+Constant.Symbol.SLASH_LEFT+CLASSPATH;
 			List<String> sourceDirectoryList=new ArrayList<String>();
 			List<String> dependProjectList=new ArrayList<String>();
 			Document document=null;
