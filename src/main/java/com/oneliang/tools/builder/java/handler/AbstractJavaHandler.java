@@ -19,13 +19,6 @@ public abstract class AbstractJavaHandler extends CacheHandler {
 	protected JavaConfiguration javaConfiguration=null;
 	protected Java java=null;
 
-	/**
-	 * @param java the java to set
-	 */
-	public void setJava(Java java) {
-		this.java = java;
-	}
-
 	public void setConfiguration(Configuration configuration) {
 		super.setConfiguration(configuration);
 		if(configuration!=null&&(configuration instanceof JavaConfiguration)){
