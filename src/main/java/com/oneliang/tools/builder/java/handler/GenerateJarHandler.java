@@ -18,7 +18,7 @@ public class GenerateJarHandler extends AbstractJavaHandler {
 		for(JavaProject javaProject:javaProjectList){
 			classesOutputList.add(javaProject.getClassesOutput());
 		}
-		String cacheFullFilename=this.javaConfiguration.getMainJavaProject().getCacheOutput()+Constant.Symbol.SLASH_LEFT+"allClassesCache";
+		String cacheFullFilename=this.javaConfiguration.getMainJavaProject().getCacheOutput()+Constant.Symbol.SLASH_LEFT+CACHE_CLASS_FILE;
 		final String prepareOutput=javaConfiguration.getMainJavaProject().getPrepareOutput();
 		CacheOption classesCacheOption=new CacheOption(cacheFullFilename, classesOutputList);
 		classesCacheOption.fileSuffix=Constant.Symbol.DOT+Constant.File.CLASS;
@@ -38,7 +38,7 @@ public class GenerateJarHandler extends AbstractJavaHandler {
 				return true;
 			}
 		};
-		cacheFullFilename=this.javaConfiguration.getMainJavaProject().getCacheOutput()+Constant.Symbol.SLASH_LEFT+"allPrepareCache";
+		cacheFullFilename=this.javaConfiguration.getMainJavaProject().getCacheOutput()+Constant.Symbol.SLASH_LEFT+CACHE_PREPARE_OUTPUT;
 		CacheOption jarCacheOption=new CacheOption(cacheFullFilename, Arrays.asList(this.javaConfiguration.getMainJavaProject().getPrepareOutput()));
 		jarCacheOption.changedFileProcessor=new ChangedFileProcessor(){
 			public boolean process(Iterable<ChangedFile> changedFileIterable) {

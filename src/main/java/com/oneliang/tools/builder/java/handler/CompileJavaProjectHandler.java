@@ -6,7 +6,6 @@ import java.util.List;
 import com.oneliang.Constant;
 import com.oneliang.tools.builder.base.BuildException;
 import com.oneliang.tools.builder.base.BuilderUtil;
-import com.oneliang.tools.builder.java.base.JavaProject;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 
@@ -17,7 +16,7 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
 	public boolean handle() {
 		FileUtil.createDirectory(this.javaProject.getClassesOutput());
 		FileUtil.createDirectory(this.javaProject.getCacheOutput());
-		String sourceFileCacheFullFilename=javaProject.getCacheOutput()+"/javaFileCache";
+		String sourceFileCacheFullFilename=javaProject.getCacheOutput()+Constant.Symbol.SLASH_LEFT+CACHE_JAVA_FILE;
 		final CacheOption cacheOption=new CacheOption(sourceFileCacheFullFilename, this.javaProject.getSourceDirectoryList());
 		cacheOption.fileSuffix=Constant.Symbol.DOT+Constant.File.JAVA;
 		cacheOption.changedFileProcessor=new ChangedFileProcessor() {
@@ -27,7 +26,7 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
 				List<String> classpathList=javaProject.getCompileClasspathList();
 				if(changedFileIterable!=null&&changedFileIterable.iterator().hasNext()){
 					List<String> togetherSourceList=new ArrayList<String>();
-					String javacSourceListFullFilename=javaProject.getCacheOutput()+"/"+JavaProject.JAVAC_SOURCE_FILE_LIST;
+					String javacSourceListFullFilename=javaProject.getCacheOutput()+"/"+JAVAC_SOURCE_FILE_LIST;
 					try{
 						StringBuilder stringBuilder=new StringBuilder();
 						for(ChangedFile changedFile:changedFileIterable){

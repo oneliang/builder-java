@@ -6,11 +6,6 @@ import com.oneliang.tools.builder.base.Project;
 
 public class JavaProject extends Project{
 
-	public static final String JAVA_FILE_MAPPING="javaFileMapping.properties";
-	public static final String CLASS_FILE_MAPPING="classFileMapping.properties";
-	public static final String JAR_FILE_MAPPING="jarFileMapping.properties";
-	public static final String JAVAC_SOURCE_FILE_LIST="javacSourceFileList";
-
 	//use in building
 	private List<JavaProject> parentJavaProjectList=null;
 	protected List<String> compileClasspathList=null;
