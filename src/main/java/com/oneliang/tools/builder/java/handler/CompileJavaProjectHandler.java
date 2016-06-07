@@ -26,7 +26,7 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
 				List<String> classpathList=javaProject.getCompileClasspathList();
 				if(changedFileIterable!=null&&changedFileIterable.iterator().hasNext()){
 					List<String> togetherSourceList=new ArrayList<String>();
-					String javacSourceListFullFilename=javaProject.getCacheOutput()+"/"+JAVAC_SOURCE_FILE_LIST;
+					String javacSourceListFullFilename=javaProject.getCacheOutput()+Constant.Symbol.SLASH_LEFT+JAVAC_SOURCE_FILE_LIST;
 					try{
 						StringBuilder stringBuilder=new StringBuilder();
 						for(ChangedFile changedFile:changedFileIterable){
