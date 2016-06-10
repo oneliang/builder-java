@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.oneliang.Constant;
+import com.oneliang.tools.builder.base.Project;
 import com.oneliang.tools.builder.java.base.JavaProject;
 import com.oneliang.util.file.FileUtil;
 
@@ -14,9 +15,9 @@ public class GenerateJarHandler extends AbstractJavaHandler {
 	protected List<CacheOption> getCacheOptionList(){
 		FileUtil.createDirectory(this.javaConfiguration.getMainJavaProject().getPrepareOutput());
 		List<String> classesOutputList=new ArrayList<String>();
-		final List<JavaProject> javaProjectList=this.javaConfiguration.getJavaProjectList();
-		for(JavaProject javaProject:javaProjectList){
-			classesOutputList.add(javaProject.getClassesOutput());
+		final List<Project> projectList=this.javaConfiguration.getProjectList();
+		for(Project project:projectList){
+			classesOutputList.add(project.getClassesOutput());
 		}
 		String cacheFullFilename=this.javaConfiguration.getMainJavaProject().getCacheOutput()+Constant.Symbol.SLASH_LEFT+CACHE_CLASS_FILE;
 		final String prepareOutput=javaConfiguration.getMainJavaProject().getPrepareOutput();

@@ -7,7 +7,6 @@ import com.oneliang.tools.builder.base.Project;
 public class JavaProject extends Project{
 
 	//use in building
-	private List<JavaProject> parentJavaProjectList=null;
 	protected List<String> compileClasspathList=null;
 	protected List<String> onlyCompileClasspathList=null;
 
@@ -24,20 +23,6 @@ public class JavaProject extends Project{
 
 	public void initialize() {
 		super.initialize();
-	}
-
-	/**
-	 * @return the parentJavaProjectList
-	 */
-	public List<JavaProject> getParentJavaProjectList() {
-		return parentJavaProjectList;
-	}
-
-	/**
-	 * @param parentJavaProjectList the parentJavaProjectList to set
-	 */
-	void setParentJavaProjectList(List<JavaProject> parentJavaProjectList) {
-		this.parentJavaProjectList = parentJavaProjectList;
 	}
 
 	/**

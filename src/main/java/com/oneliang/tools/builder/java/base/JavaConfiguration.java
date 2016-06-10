@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.oneliang.Constant;
 import com.oneliang.tools.builder.base.BuilderConfiguration.TaskNodeInsertBean;
@@ -53,9 +51,7 @@ public abstract class JavaConfiguration extends Configuration {
 	protected String projectTaskNodeInsertName=null;
 
 	protected JavaProject mainJavaProject=null;
-	protected final List<JavaProject> javaProjectList=new CopyOnWriteArrayList<JavaProject>();
-	protected final Map<String, JavaProject> javaProjectMap=new ConcurrentHashMap<String, JavaProject>();
-	private Map<TaskNodeInsertBean,JavaProject> taskNodeInsertBeanJavaProjectMap=new HashMap<TaskNodeInsertBean,JavaProject>();
+	protected Map<TaskNodeInsertBean,Project> taskNodeInsertBeanProjectMap=new HashMap<TaskNodeInsertBean,Project>();
 
 	public static class Environment{
 		public static final String JAVA_HOME="JAVA_HOME";
@@ -93,22 +89,28 @@ public abstract class JavaConfiguration extends Configuration {
 			}
 			this.ideInitializer.initializeAllProjectFromIDE();
 		}
-		for(Project project:this.projectList){
-			JavaProject javaProject=null;
-			if(!(project instanceof JavaProject)){
-				continue;
-			}
-			javaProject=(JavaProject)project;
-			this.javaProjectList.add(javaProject);
-			if(!this.javaProjectMap.containsKey(javaProject.getName())){
-				this.javaProjectMap.put(javaProject.getName(),javaProject);
-			}
+//		for(Project project:this.projectList){
+//			JavaProject javaProject=null;
+//			if(!(project instanceof JavaProject)){
+//				continue;
+//			}
+//			javaProject=(JavaProject)project;
+//			this.javaProjectList.add(javaProject);
+//			if(!this.javaProjectMap.containsKey(javaProject.getName())){
+//				this.javaProjectMap.put(javaProject.getName(),javaProject);
+//			}
+//		}
+		Project mainProject=this.projectMap.get(this.projectMain);
+		if(mainProject!=null&&mainProject instanceof JavaProject){
+			this.mainJavaProject=(JavaProject)mainProject;
 		}
-		this.mainJavaProject=this.javaProjectMap.get(this.projectMain);
-		for(JavaProject javaProject:this.javaProjectList){
-			javaProject.setParentJavaProjectList(this.findParentJavaProjectList(javaProject));
-			List<String> compileClasspathList=this.getJavaProjectCompileClasspathList(javaProject);
-			javaProject.setCompileClasspathList(compileClasspathList);
+		for(Project project:this.projectList){
+			project.setParentProjectList(this.findParentProjectList(project));
+			List<String> compileClasspathList=this.getProjectCompileClasspathList(project);
+			if(project instanceof JavaProject){
+				JavaProject javaProject=(JavaProject)project;
+				javaProject.setCompileClasspathList(compileClasspathList);
+			}
 		}
 	}
 
@@ -119,10 +121,10 @@ public abstract class JavaConfiguration extends Configuration {
 		List<TaskNodeInsertBean> taskNodeInsertBeanList=new ArrayList<TaskNodeInsertBean>();
 		TaskNodeInsertBean projectTaskNodeInsertBean=this.builderConfiguration.getTaskNodeInsertBeanMap().get(this.projectTaskNodeInsertName);
 		projectTaskNodeInsertBean.setSkip(true);
-		for(JavaProject javaProject:this.javaProjectList){
+		for(Project project:this.projectList){
 			//compile task node insert
-			String name=javaProject.getName();
-			String[] parentNames=javaProject.getDependProjects();
+			String name=project.getName();
+			String[] parentNames=project.getDependProjects();
 			if(parentNames==null||parentNames.length==0){
 				parentNames=projectTaskNodeInsertBean.getParentNames();
 			}
@@ -131,7 +133,7 @@ public abstract class JavaConfiguration extends Configuration {
 			taskNodeInsertBean.setParentNames(parentNames);
 			taskNodeInsertBean.setHandlerName(projectTaskNodeInsertBean.getHandlerName());
 			taskNodeInsertBeanList.add(taskNodeInsertBean);
-			taskNodeInsertBeanJavaProjectMap.put(taskNodeInsertBean, javaProject);
+			taskNodeInsertBeanProjectMap.put(taskNodeInsertBean, project);
 
 			if(name.equals(this.projectMain)){
 				List<TaskNodeInsertBean> childTaskNodeInsertBeanList=this.builderConfiguration.getChildTaskNodeInsertBeanMap().get(this.projectTaskNodeInsertName);
@@ -178,49 +180,57 @@ public abstract class JavaConfiguration extends Configuration {
 		Handler handler=taskNodeInsertBean.getHandlerInstance();
 		if(handler instanceof JavaProjectHandler){
 			JavaProjectHandler javaProjectHandler=(JavaProjectHandler)handler;
-			javaProjectHandler.setJavaProject(this.taskNodeInsertBeanJavaProjectMap.get(taskNodeInsertBean));
+			Project project=this.taskNodeInsertBeanProjectMap.get(taskNodeInsertBean);
+			if(project!=null&&project instanceof JavaProject){
+				JavaProject javaProject=(JavaProject)project;
+				javaProjectHandler.setJavaProject(javaProject);
+			}
 		}
 	}
 
 	/**
-	 * find parent java project list
-	 * @param javaProject
-	 * @return List<JavaProject>
+	 * find parent project list
+	 * @param Project
+	 * @return List<Project>
 	 */
-	public List<JavaProject> findParentJavaProjectList(JavaProject javaProject){
-		List<JavaProject> javaPojectList=new ArrayList<JavaProject>();
-		Queue<JavaProject> queue=new ConcurrentLinkedQueue<JavaProject>();
-		queue.add(javaProject);
+	public List<Project> findParentProjectList(Project project){
+		List<Project> projectList=new ArrayList<Project>();
+		Queue<Project> queue=new ConcurrentLinkedQueue<Project>();
+		queue.add(project);
 		while(!queue.isEmpty()){
-			JavaProject project=queue.poll();
-			String[] dependProjects=project.getDependProjects();
+			Project currentProject=queue.poll();
+			String[] dependProjects=currentProject.getDependProjects();
 			if(dependProjects!=null){
 				for(String dependProject:dependProjects){
-					JavaProject parentJavaProject=this.javaProjectMap.get(dependProject);
-					if(!javaPojectList.contains(parentJavaProject)){
-						javaPojectList.add(parentJavaProject);
-						queue.add(parentJavaProject);
+					Project parentProject=this.projectMap.get(dependProject);
+					if(parentProject!=null){
+						if(!projectList.contains(parentProject)){
+							projectList.add(parentProject);
+							queue.add(parentProject);
+						}
+					}else{
+						logger.warning("Parent project is null,project:"+currentProject.getName()+",depend project:"+dependProject);
 					}
 				}
 			}
 		}
-		return javaPojectList;
+		return projectList;
 	}
 
 	/**
-	 * get java project compile classpath list
-	 * @param javaProject
+	 * get project compile classpath list
+	 * @param project
 	 * @return List<String>
 	 */
-	private List<String> getJavaProjectCompileClasspathList(JavaProject javaProject){
+	protected List<String> getProjectCompileClasspathList(Project project){
 		List<String> classpathList=new ArrayList<String>();
-		List<JavaProject> parentAndSelfJavaProjectList=new ArrayList<JavaProject>();
-		parentAndSelfJavaProjectList.add(javaProject);
-		parentAndSelfJavaProjectList.addAll(javaProject.getParentJavaProjectList());
-		for(JavaProject parentAndSelfJavaProject:parentAndSelfJavaProjectList){
-			classpathList.addAll(parentAndSelfJavaProject.getDependJarList());
+		List<Project> parentAndSelfProjectList=new ArrayList<Project>();
+		parentAndSelfProjectList.add(project);
+		parentAndSelfProjectList.addAll(project.getParentProjectList());
+		for(Project parentAndSelfProject:parentAndSelfProjectList){
+			classpathList.addAll(parentAndSelfProject.getDependJarList());
 //			if(!javaProject.getName().equals(parentAndSelfJavaProject.getName())){
-				classpathList.add(parentAndSelfJavaProject.getClassesOutput());
+				classpathList.add(parentAndSelfProject.getClassesOutput());
 //			}else{
 //				if(!this.isNeedToClean()){
 //					classpathList.add(parentAndSelfJavaProject.getClassesOutput());
@@ -389,13 +399,6 @@ public abstract class JavaConfiguration extends Configuration {
 	 */
 	public void setProjectMain(String projectMain) {
 		this.projectMain = projectMain;
-	}
-
-	/**
-	 * @return the javaProjectList
-	 */
-	public List<JavaProject> getJavaProjectList() {
-		return javaProjectList;
 	}
 
 	/**
