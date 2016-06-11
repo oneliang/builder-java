@@ -6,6 +6,7 @@ import java.util.List;
 import com.oneliang.Constant;
 import com.oneliang.tools.builder.base.BuildException;
 import com.oneliang.tools.builder.base.BuilderUtil;
+import com.oneliang.tools.builder.base.ChangedFile;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
 

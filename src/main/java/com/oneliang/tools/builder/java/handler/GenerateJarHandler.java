@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.oneliang.Constant;
+import com.oneliang.tools.builder.base.ChangedFile;
 import com.oneliang.tools.builder.base.Project;
 import com.oneliang.tools.builder.java.base.JavaProject;
 import com.oneliang.util.file.FileUtil;

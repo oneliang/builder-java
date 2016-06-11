@@ -17,12 +17,9 @@ import com.oneliang.tools.builder.base.Handler;
 import com.oneliang.tools.builder.base.Project;
 import com.oneliang.tools.builder.java.handler.JavaProjectHandler;
 import com.oneliang.util.common.StringUtil;
-import com.oneliang.util.logging.Logger;
-import com.oneliang.util.logging.LoggerManager;
 
 public abstract class JavaConfiguration extends Configuration {
 
-	protected static final Logger logger=LoggerManager.getLogger(JavaConfiguration.class);
 	public static final String SHA1="SHA1";
 	public static final String MD5_WITH_RSA="MD5withRSA";
 	public static final String MAP_KEY_JAVA_SDK="javaSdk";
@@ -83,27 +80,6 @@ public abstract class JavaConfiguration extends Configuration {
 	}
 
 	protected void initializeAllProject() {
-		if(this.projectList.isEmpty()){
-			if(this.ideInitializer==null){
-				throw new NullPointerException("ide initializer must not be null");
-			}
-			this.ideInitializer.initializeAllProjectFromIDE();
-		}
-//		for(Project project:this.projectList){
-//			JavaProject javaProject=null;
-//			if(!(project instanceof JavaProject)){
-//				continue;
-//			}
-//			javaProject=(JavaProject)project;
-//			this.javaProjectList.add(javaProject);
-//			if(!this.javaProjectMap.containsKey(javaProject.getName())){
-//				this.javaProjectMap.put(javaProject.getName(),javaProject);
-//			}
-//		}
-		Project mainProject=this.projectMap.get(this.projectMain);
-		if(mainProject!=null&&mainProject instanceof JavaProject){
-			this.mainJavaProject=(JavaProject)mainProject;
-		}
 		for(Project project:this.projectList){
 			project.setParentProjectList(this.findParentProjectList(project));
 			List<String> compileClasspathList=this.getProjectCompileClasspathList(project);
@@ -111,6 +87,18 @@ public abstract class JavaConfiguration extends Configuration {
 				JavaProject javaProject=(JavaProject)project;
 				javaProject.setCompileClasspathList(compileClasspathList);
 			}
+		}
+		Project mainProject=this.projectMap.get(this.projectMain);
+		if(mainProject!=null&&mainProject instanceof JavaProject){
+			this.mainJavaProject=(JavaProject)mainProject;
+		}
+		//add project to android project list,reset project list and project map
+		this.projectList.clear();
+		this.projectMap.clear();
+		List<Project> mainProjectParentProjectList=mainProject.getParentProjectList();
+		this.addProject(mainProject);
+		for(Project project:mainProjectParentProjectList){
+			this.addProject(project);
 		}
 	}
 

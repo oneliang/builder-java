@@ -13,22 +13,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.oneliang.Constant;
-import com.oneliang.tools.builder.base.Configuration;
 import com.oneliang.tools.builder.base.Project;
 import com.oneliang.util.common.JavaXmlUtil;
 import com.oneliang.util.common.StringUtil;
 
-public class JavaConfigurationForEclipse extends JavaConfiguration implements Configuration.IDEInitializer,Configuration.ProjectInitializer{
+public class JavaConfigurationForEclipse extends JavaConfiguration{
 
 	protected static final String CLASSPATH=".classpath";
 
-	protected void initialize() {
-		this.ideInitializer=this;
-		this.projectInitializer=this;
-		super.initialize();
+	protected void initializeAllProject() {
+		initializeAllProjectFromEclipse();
+		super.initializeAllProject();
 	}
 
-	public void initializeAllProjectFromIDE() {
+	private void initializeAllProjectFromEclipse() {
 		JavaProject mainJavaProject=new JavaProject(this.getProjectWorkspace(),this.getProjectMain(),this.getBuildOutput());
 		mainJavaProject.initialize();
 		this.addProject(mainJavaProject);
@@ -70,10 +68,8 @@ public class JavaConfigurationForEclipse extends JavaConfiguration implements Co
 												queue.add(parentJavaProject);
 											}
 										}else{
-											if(this.ideInitializer!=null){
-												if(this.ideInitializer.isSourceDirectory(javaProject, sourceDirectory)){
-													sourceDirectoryList.add(sourceDirectory);
-												}
+											if(this.isSourceDirectory(javaProject, sourceDirectory)){
+												sourceDirectoryList.add(sourceDirectory);
 											}
 										}
 									}
@@ -95,13 +91,7 @@ public class JavaConfigurationForEclipse extends JavaConfiguration implements Co
 		}
 	}
 
-	public boolean isSourceDirectory(Project Project, String sourceDirectory) {
+	private boolean isSourceDirectory(Project Project, String sourceDirectory) {
 		return true;
-	}
-
-	public void parsingProjectProperties(Project Project, String key, String value) {
-	}
-
-	public void readProjectOtherProperties(Project project) {
 	}
 }
