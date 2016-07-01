@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.oneliang.Constant;
 import com.oneliang.tools.builder.base.BuilderConfiguration.TaskNodeInsertBean;
@@ -31,6 +32,8 @@ public abstract class JavaConfiguration extends Configuration {
 	public static final String MAP_KEY_JAR_SIGALG="jarSigalg";
 	public static final String MAP_KEY_PROJECT_WORKSPACE="projectWorkspace";
 	public static final String MAP_KEY_PROJECT_MAIN="projectMain";
+	public static final String MAP_KEY_BUILD_OUTPUT="buildOutput";
+	public static final String MAP_KEY_GLOBAL_CLASSPATH="globalClasspath";
 	public static final String MAP_KEY_PROJECT_TASK_NODE_INSERT_NAME="projectTaskNodeInsertName";
 
 	protected String javaSdk=null;
@@ -45,10 +48,12 @@ public abstract class JavaConfiguration extends Configuration {
 	protected String projectWorkspace=null;
 	protected String projectMain=null;
 	protected String buildOutput=null;
+	protected String globalClasspath=null;
 	protected String projectTaskNodeInsertName=null;
 
 	protected JavaProject mainJavaProject=null;
 	protected Map<TaskNodeInsertBean,Project> taskNodeInsertBeanProjectMap=new HashMap<TaskNodeInsertBean,Project>();
+	protected List<String> globalClasspathList=new CopyOnWriteArrayList<String>();
 
 	public static class Environment{
 		public static final String JAVA_HOME="JAVA_HOME";
@@ -68,6 +73,14 @@ public abstract class JavaConfiguration extends Configuration {
 		this.java=new Java(this.javaSdk);
 		this.jarKeystore=new File(this.jarKeystore).getAbsolutePath();
 		this.projectWorkspace=new File(this.projectWorkspace).getAbsolutePath();
+		if(StringUtil.isNotBlank(this.globalClasspath)){
+			String[] globalClasspathArray=this.globalClasspath.split(Constant.Symbol.SEMICOLON);
+			if(globalClasspathArray!=null){
+				for(String globalClasspath:globalClasspathArray){
+					this.globalClasspathList.add(new File(globalClasspath).getAbsolutePath());
+				}
+			}
+		}
 		logger.info(MAP_KEY_JAVA_SDK+Constant.Symbol.COLON+this.javaSdk);
 		logger.info(MAP_KEY_JAR_KEYSTORE+Constant.Symbol.COLON+this.jarKeystore);
 //		logger.info(MAP_KEY_JAR_STORE_PASSWORD+Constant.Symbol.COLON+this.jarStorePassword);
@@ -76,6 +89,8 @@ public abstract class JavaConfiguration extends Configuration {
 		logger.info(MAP_KEY_JAR_SIGALG+Constant.Symbol.COLON+this.jarSigalg);
 		logger.info(MAP_KEY_PROJECT_WORKSPACE+Constant.Symbol.COLON+this.projectWorkspace);
 		logger.info(MAP_KEY_PROJECT_MAIN+Constant.Symbol.COLON+this.projectMain);
+		logger.info(MAP_KEY_BUILD_OUTPUT+Constant.Symbol.COLON+this.buildOutput);
+		logger.info(MAP_KEY_GLOBAL_CLASSPATH+Constant.Symbol.COLON+this.globalClasspath);
 		logger.info(MAP_KEY_PROJECT_TASK_NODE_INSERT_NAME+Constant.Symbol.COLON+this.projectTaskNodeInsertName);
 	}
 
@@ -224,6 +239,9 @@ public abstract class JavaConfiguration extends Configuration {
 //					classpathList.add(parentAndSelfJavaProject.getClassesOutput());
 //				}
 //			}
+		}
+		if(!this.globalClasspathList.isEmpty()){
+			classpathList.addAll(this.globalClasspathList);
 		}
 		return classpathList;
 	}
@@ -401,5 +419,12 @@ public abstract class JavaConfiguration extends Configuration {
 	 */
 	public JavaProject getMainJavaProject() {
 		return mainJavaProject;
+	}
+
+	/**
+	 * @param globalClasspath the globalClasspath to set
+	 */
+	public void setGlobalClasspath(String globalClasspath) {
+		this.globalClasspath = globalClasspath;
 	}
 }
