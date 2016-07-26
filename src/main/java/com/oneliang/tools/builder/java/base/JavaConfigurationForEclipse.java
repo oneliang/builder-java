@@ -78,7 +78,7 @@ public class JavaConfigurationForEclipse extends JavaConfiguration{
 									if(pathNode!=null){
 										String dependJar=pathNode.getNodeValue();
 										File dependJarFile=new File(javaProject.getHome(),dependJar);
-										javaProject.getDependJarList().add(dependJarFile.getAbsolutePath());
+										javaProject.addDependJar(dependJarFile.getAbsolutePath());
 									}
 								}
 							}
