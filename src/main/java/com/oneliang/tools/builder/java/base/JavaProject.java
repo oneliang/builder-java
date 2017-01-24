@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.oneliang.tools.builder.base.Project;
 
-public class JavaProject extends Project{
+public class JavaProject extends Project {
 
-	//use in building
-	protected List<String> compileClasspathList=null;
-	protected List<String> onlyCompileClasspathList=null;
+	// use in building
+	protected List<String> compileClasspathList = null;
+	protected List<String> onlyCompileClasspathList = null;
 
 	public JavaProject() {
 	}
@@ -33,11 +33,13 @@ public class JavaProject extends Project{
 	}
 
 	/**
-	 * @param compileClasspathList the compileClasspathList to set
+	 * @param compileClasspathList
+	 *            the compileClasspathList to set
 	 */
 	public void setCompileClasspathList(List<String> compileClasspathList) {
 		this.compileClasspathList = compileClasspathList;
 	}
+
 	/**
 	 * @return the onlyCompileClasspathList
 	 */
@@ -46,7 +48,8 @@ public class JavaProject extends Project{
 	}
 
 	/**
-	 * @param onlyCompileClasspathList the onlyCompileClasspathList to set
+	 * @param onlyCompileClasspathList
+	 *            the onlyCompileClasspathList to set
 	 */
 	public void setOnlyCompileClasspathList(List<String> onlyCompileClasspathList) {
 		this.onlyCompileClasspathList = onlyCompileClasspathList;
