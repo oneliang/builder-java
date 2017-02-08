@@ -108,13 +108,13 @@ public abstract class JavaConfiguration extends Configuration {
 			this.mainJavaProject=(JavaProject)mainProject;
 		}
 		//add project to android project list,reset project list and project map
-		this.projectList.clear();
-		this.projectMap.clear();
-		List<Project> mainProjectParentProjectList=mainProject.getParentProjectList();
-		this.addProject(mainProject);
-		for(Project project:mainProjectParentProjectList){
-			this.addProject(project);
-		}
+//		this.projectList.clear();
+//		this.projectMap.clear();
+//		List<Project> mainProjectParentProjectList=mainProject.getParentProjectList();
+//		this.addProject(mainProject);
+//		for(Project project:mainProjectParentProjectList){
+//			this.addProject(project);
+//		}
 	}
 
 	protected List<TaskNodeInsertBean> increaseTaskNodeInsertBeanList() {
