@@ -6,6 +6,7 @@ import java.util.List;
 import com.oneliang.Constant;
 import com.oneliang.tools.builder.base.BuildException;
 import com.oneliang.tools.builder.base.BuilderUtil;
+import com.oneliang.tools.builder.base.CacheHandler.CacheOption.ChangedFileProcessor;
 import com.oneliang.tools.builder.base.ChangedFile;
 import com.oneliang.util.common.StringUtil;
 import com.oneliang.util.file.FileUtil;
@@ -31,6 +32,9 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
 					try{
 						StringBuilder stringBuilder=new StringBuilder();
 						for(ChangedFile changedFile:changedFileIterable){
+                            if (changedFile.status.equals(ChangedFile.Status.DELETED)) {
+                                continue;
+                            }
 							String source=changedFile.fullFilename;
 							stringBuilder.append(source);
 							if(BuilderUtil.isWindowsOS()){
