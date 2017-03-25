@@ -6,6 +6,7 @@ import com.oneliang.tools.builder.base.Project;
 
 public class JavaProject extends Project {
 
+	protected List<String> compileProcessorPathList = null;
 	// use in building
 	protected List<String> compileClasspathList = null;
 	protected List<String> onlyCompileClasspathList = null;
@@ -23,6 +24,21 @@ public class JavaProject extends Project {
 
 	public void initialize() {
 		super.initialize();
+	}
+
+	/**
+	 * @return the compileProcessorPathList
+	 */
+	public List<String> getCompileProcessorPathList() {
+		return compileProcessorPathList;
+	}
+
+	/**
+	 * @param compileProcessorPathList
+	 *            the compileProcessorPathList to set
+	 */
+	public void setCompileProcessorPathList(List<String> compileProcessorPathList) {
+		this.compileProcessorPathList = compileProcessorPathList;
 	}
 
 	/**
