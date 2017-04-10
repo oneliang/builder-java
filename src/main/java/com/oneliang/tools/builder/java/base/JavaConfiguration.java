@@ -231,7 +231,7 @@ public abstract class JavaConfiguration extends Configuration {
 		parentAndSelfProjectList.add(project);
 		parentAndSelfProjectList.addAll(project.getParentProjectList());
 		for(Project parentAndSelfProject:parentAndSelfProjectList){
-			classpathList.addAll(parentAndSelfProject.getDependJarList());
+			classpathList.addAll(parentAndSelfProject.getDependJarSet());
 //			if(!javaProject.getName().equals(parentAndSelfJavaProject.getName())){
 				classpathList.add(parentAndSelfProject.getClassesOutput());
 //			}else{
