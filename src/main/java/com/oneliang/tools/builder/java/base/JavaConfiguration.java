@@ -65,7 +65,7 @@ public abstract class JavaConfiguration extends Configuration {
 			if(this.builderConfiguration.getEnvironmentMap().containsKey(Environment.JAVA_HOME)){
 				this.javaSdk=this.builderConfiguration.getEnvironmentMap().get(Environment.JAVA_HOME);
 			}else{
-				throw new ConfigurationException("Need to configurate "+Environment.JAVA_HOME+" or set the java.sdk in build properties");
+				throw new ConfigurationException("Need to configurate "+Environment.JAVA_HOME+" or set the javaSdk in build xml");
 			}
 		}else{
 			this.javaSdk=this.javaSdk.trim();
