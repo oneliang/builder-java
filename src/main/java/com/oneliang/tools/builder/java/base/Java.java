@@ -70,4 +70,11 @@ public class Java {
 	public String getJavaExecutor() {
 		return javaExecutor;
 	}
+
+    /**
+     * @return the home
+     */
+    public String getHome() {
+        return home;
+    }
 }
