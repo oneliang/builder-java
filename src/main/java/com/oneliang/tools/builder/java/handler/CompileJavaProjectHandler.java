@@ -3,7 +3,7 @@ package com.oneliang.tools.builder.java.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.tools.builder.base.BuildException;
 import com.oneliang.tools.builder.base.BuilderUtil;
 import com.oneliang.tools.builder.base.CacheHandler.CacheOption.ChangedFileProcessor;
@@ -18,9 +18,9 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
     public boolean handle() {
         FileUtil.createDirectory(this.javaProject.getClassesOutput());
         FileUtil.createDirectory(this.javaProject.getCacheOutput());
-        String sourceFileCacheFullFilename = javaProject.getCacheOutput() + Constant.Symbol.SLASH_LEFT + CACHE_JAVA_FILE;
+        String sourceFileCacheFullFilename = javaProject.getCacheOutput() + Constants.Symbol.SLASH_LEFT + CACHE_JAVA_FILE;
         final CacheOption cacheOption = new CacheOption(sourceFileCacheFullFilename, this.javaProject.getSourceDirectoryList());
-        cacheOption.fileSuffix = Constant.Symbol.DOT + Constant.File.JAVA;
+        cacheOption.fileSuffix = Constants.Symbol.DOT + Constants.File.JAVA;
         cacheOption.changedFileProcessor = new ChangedFileProcessor() {
             public boolean process(Iterable<ChangedFile> changedFileIterable) {
                 boolean result = false;
@@ -28,7 +28,7 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
                 List<String> classpathList = javaProject.getCompileClasspathList();
                 if (changedFileIterable != null && changedFileIterable.iterator().hasNext()) {
                     List<String> togetherSourceList = new ArrayList<String>();
-                    String javacSourceListFullFilename = javaProject.getCacheOutput() + Constant.Symbol.SLASH_LEFT + JAVAC_SOURCE_FILE_LIST;
+                    String javacSourceListFullFilename = javaProject.getCacheOutput() + Constants.Symbol.SLASH_LEFT + JAVAC_SOURCE_FILE_LIST;
                     try {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (ChangedFile changedFile : changedFileIterable) {
@@ -45,17 +45,17 @@ public class CompileJavaProjectHandler extends JavaProjectHandler {
                             // logger.log("\t"+javaProject.getName()+" compile
                             // source file:"+source);
                         }
-                        FileUtil.writeFile(javacSourceListFullFilename, stringBuilder.toString().getBytes(Constant.Encoding.UTF8));
+                        FileUtil.writeFile(javacSourceListFullFilename, stringBuilder.toString().getBytes(Constants.Encoding.UTF8));
                     } catch (Exception e) {
-                        logger.error(Constant.Base.EXCEPTION, e);
+                        logger.error(Constants.Base.EXCEPTION, e);
                         throw new BuildException(e);
                     }
-                    togetherSourceList.add(Constant.Symbol.AT + javacSourceListFullFilename);
+                    togetherSourceList.add(Constants.Symbol.AT + javacSourceListFullFilename);
                     int javacResult = 0;
                     try {
                         javacResult = BuilderUtil.javac(togetherSourceList, classesOutput, true, classpathList);
                     } catch (Throwable e) {
-                        logger.error(javaProject.getName() + Constant.Symbol.COLON + Constant.Base.EXCEPTION, e);
+                        logger.error(javaProject.getName() + Constants.Symbol.COLON + Constants.Base.EXCEPTION, e);
                         javacResult = 1;
                     }
                     if (javacResult != 0) {

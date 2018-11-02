@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.tools.builder.base.BuilderConfiguration.TaskNodeInsertBean;
 import com.oneliang.tools.builder.base.Configuration;
 import com.oneliang.tools.builder.base.Handler;
@@ -77,7 +77,7 @@ public abstract class JavaConfiguration extends Configuration {
         this.jarKeystore = new File(this.jarKeystore).getAbsolutePath();
         this.projectWorkspace = new File(this.projectWorkspace).getAbsolutePath();
         if (StringUtil.isNotBlank(this.globalClasspath)) {
-            String[] globalClasspathArray = this.globalClasspath.split(Constant.Symbol.SEMICOLON);
+            String[] globalClasspathArray = this.globalClasspath.split(Constants.Symbol.SEMICOLON);
             if (globalClasspathArray != null) {
                 for (String globalClasspath : globalClasspathArray) {
                     this.globalClasspathList.add(new File(globalClasspath).getAbsolutePath());
@@ -85,25 +85,25 @@ public abstract class JavaConfiguration extends Configuration {
             }
         }
         if (StringUtil.isNotBlank(this.proguardClasspath)) {
-            String[] proguardClasspathArray = this.proguardClasspath.split(Constant.Symbol.SEMICOLON);
+            String[] proguardClasspathArray = this.proguardClasspath.split(Constants.Symbol.SEMICOLON);
             if (proguardClasspathArray != null) {
                 for (String proguardClasspath : proguardClasspathArray) {
                     this.proguardClasspathList.add(new File(proguardClasspath).getAbsolutePath());
                 }
             }
         }
-        logger.info(MAP_KEY_JAVA_SDK + Constant.Symbol.COLON + this.javaSdk);
-        logger.info(MAP_KEY_JAR_KEYSTORE + Constant.Symbol.COLON + this.jarKeystore);
-        // logger.info(MAP_KEY_JAR_STORE_PASSWORD+Constant.Symbol.COLON+this.jarStorePassword);
-        // logger.info(MAP_KEY_JAR_KEY_PASSWORD+Constant.Symbol.COLON+this.jarKeyPassword);
-        logger.info(MAP_KEY_JAR_DIGESTALG + Constant.Symbol.COLON + this.jarDigestalg);
-        logger.info(MAP_KEY_JAR_SIGALG + Constant.Symbol.COLON + this.jarSigalg);
-        logger.info(MAP_KEY_PROJECT_WORKSPACE + Constant.Symbol.COLON + this.projectWorkspace);
-        logger.info(MAP_KEY_PROJECT_MAIN + Constant.Symbol.COLON + this.projectMain);
-        logger.info(MAP_KEY_BUILD_OUTPUT + Constant.Symbol.COLON + this.buildOutput);
-        logger.info(MAP_KEY_GLOBAL_CLASSPATH + Constant.Symbol.COLON + this.globalClasspath);
-        logger.info(MAP_KEY_PROGUARD_CLASSPATH + Constant.Symbol.COLON + this.proguardClasspath);
-        logger.info(MAP_KEY_PROJECT_TASK_NODE_INSERT_NAME + Constant.Symbol.COLON + this.projectTaskNodeInsertName);
+        logger.info(MAP_KEY_JAVA_SDK + Constants.Symbol.COLON + this.javaSdk);
+        logger.info(MAP_KEY_JAR_KEYSTORE + Constants.Symbol.COLON + this.jarKeystore);
+        // logger.info(MAP_KEY_JAR_STORE_PASSWORD+Constants.Symbol.COLON+this.jarStorePassword);
+        // logger.info(MAP_KEY_JAR_KEY_PASSWORD+Constants.Symbol.COLON+this.jarKeyPassword);
+        logger.info(MAP_KEY_JAR_DIGESTALG + Constants.Symbol.COLON + this.jarDigestalg);
+        logger.info(MAP_KEY_JAR_SIGALG + Constants.Symbol.COLON + this.jarSigalg);
+        logger.info(MAP_KEY_PROJECT_WORKSPACE + Constants.Symbol.COLON + this.projectWorkspace);
+        logger.info(MAP_KEY_PROJECT_MAIN + Constants.Symbol.COLON + this.projectMain);
+        logger.info(MAP_KEY_BUILD_OUTPUT + Constants.Symbol.COLON + this.buildOutput);
+        logger.info(MAP_KEY_GLOBAL_CLASSPATH + Constants.Symbol.COLON + this.globalClasspath);
+        logger.info(MAP_KEY_PROGUARD_CLASSPATH + Constants.Symbol.COLON + this.proguardClasspath);
+        logger.info(MAP_KEY_PROJECT_TASK_NODE_INSERT_NAME + Constants.Symbol.COLON + this.projectTaskNodeInsertName);
     }
 
     protected void initializeAllProject() {
@@ -173,7 +173,7 @@ public abstract class JavaConfiguration extends Configuration {
      * @return String
      */
     protected final String generateTaskNodeName(String baseName) {
-        return this.projectMain + Constant.Symbol.COLON + baseName;
+        return this.projectMain + Constants.Symbol.COLON + baseName;
     }
 
     /**

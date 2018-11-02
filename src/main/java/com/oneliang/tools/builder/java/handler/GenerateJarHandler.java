@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.tools.builder.base.CacheHandler.CacheOption.ChangedFileProcessor;
 import com.oneliang.tools.builder.base.ChangedFile;
 import com.oneliang.tools.builder.base.Project;
@@ -21,10 +21,10 @@ public class GenerateJarHandler extends AbstractJavaHandler {
         for (Project project : projectList) {
             classesOutputList.add(project.getClassesOutput());
         }
-        String cacheFullFilename = this.javaConfiguration.getMainJavaProject().getCacheOutput() + Constant.Symbol.SLASH_LEFT + CACHE_CLASS_FILE;
+        String cacheFullFilename = this.javaConfiguration.getMainJavaProject().getCacheOutput() + Constants.Symbol.SLASH_LEFT + CACHE_CLASS_FILE;
         final String prepareOutput = javaConfiguration.getMainJavaProject().getPrepareOutput();
         CacheOption classesCacheOption = new CacheOption(cacheFullFilename, classesOutputList);
-        classesCacheOption.fileSuffix = Constant.Symbol.DOT + Constant.File.CLASS;
+        classesCacheOption.fileSuffix = Constants.Symbol.DOT + Constants.File.CLASS;
         classesCacheOption.changedFileProcessor = new ChangedFileProcessor() {
             public boolean process(Iterable<ChangedFile> changedFileIterable) {
                 if (changedFileIterable != null) {
@@ -44,13 +44,13 @@ public class GenerateJarHandler extends AbstractJavaHandler {
                 return true;
             }
         };
-        cacheFullFilename = this.javaConfiguration.getMainJavaProject().getCacheOutput() + Constant.Symbol.SLASH_LEFT + CACHE_PREPARE_OUTPUT;
+        cacheFullFilename = this.javaConfiguration.getMainJavaProject().getCacheOutput() + Constants.Symbol.SLASH_LEFT + CACHE_PREPARE_OUTPUT;
         CacheOption jarCacheOption = new CacheOption(cacheFullFilename, Arrays.asList(this.javaConfiguration.getMainJavaProject().getPrepareOutput()));
         jarCacheOption.changedFileProcessor = new ChangedFileProcessor() {
             public boolean process(Iterable<ChangedFile> changedFileIterable) {
                 if (changedFileIterable.iterator().hasNext()) {
                     JavaProject mainJavaProject = javaConfiguration.getMainJavaProject();
-                    String outputJarFullFilename = mainJavaProject.getOutputHome() + Constant.Symbol.SLASH_LEFT + mainJavaProject.getName() + Constant.Symbol.DOT + Constant.File.JAR;
+                    String outputJarFullFilename = mainJavaProject.getOutputHome() + Constants.Symbol.SLASH_LEFT + mainJavaProject.getName() + Constants.Symbol.DOT + Constants.File.JAR;
                     FileUtil.zip(outputJarFullFilename, javaConfiguration.getMainJavaProject().getPrepareOutput());
                 }
                 return true;

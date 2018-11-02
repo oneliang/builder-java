@@ -2,7 +2,7 @@ package com.oneliang.tools.builder.java.base;
 
 import java.io.File;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.tools.builder.base.BuilderUtil;
 import com.oneliang.util.common.StringUtil;
 
@@ -29,7 +29,7 @@ public class Java {
 		File file=new File(this.home);
 		this.home=file.getAbsolutePath();
 		this.bin=this.home+"/"+BIN;
-		String osExecuteFileSuffix=BuilderUtil.isWindowsOS()?(Constant.Symbol.DOT+Constant.File.EXE):StringUtil.BLANK;
+		String osExecuteFileSuffix=BuilderUtil.isWindowsOS()?(Constants.Symbol.DOT+Constants.File.EXE):StringUtil.BLANK;
 		this.javaExecutor=this.bin+"/"+JAVA+osExecuteFileSuffix;
 		this.javacExecutor=this.bin+"/"+JAVAC+osExecuteFileSuffix;
 		this.jarExecutor=this.bin+"/"+JAR+osExecuteFileSuffix;

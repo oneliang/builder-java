@@ -12,7 +12,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.tools.builder.base.Project;
 import com.oneliang.util.common.JavaXmlUtil;
 import com.oneliang.util.common.StringUtil;
@@ -35,7 +35,7 @@ public class JavaConfigurationForEclipse extends JavaConfiguration{
 		while(!queue.isEmpty()){
 			JavaProject javaProject=queue.poll();
 			//read classpath
-			String classpath=javaProject.getHome()+Constant.Symbol.SLASH_LEFT+CLASSPATH;
+			String classpath=javaProject.getHome()+Constants.Symbol.SLASH_LEFT+CLASSPATH;
 			List<String> sourceDirectoryList=new ArrayList<String>();
 			List<String> dependProjectList=new ArrayList<String>();
 			Document document=null;
@@ -58,8 +58,8 @@ public class JavaConfigurationForEclipse extends JavaConfiguration{
 									Node pathNode=namedNodeMap.getNamedItem("path");
 									if(pathNode!=null){
 										String sourceDirectory=pathNode.getNodeValue();
-										if(sourceDirectory!=null&&sourceDirectory.startsWith(Constant.Symbol.SLASH_LEFT)){
-											String dependProjectName=sourceDirectory.replace(Constant.Symbol.SLASH_LEFT, StringUtil.BLANK);
+										if(sourceDirectory!=null&&sourceDirectory.startsWith(Constants.Symbol.SLASH_LEFT)){
+											String dependProjectName=sourceDirectory.replace(Constants.Symbol.SLASH_LEFT, StringUtil.BLANK);
 											dependProjectList.add(dependProjectName);
 											if(!this.projectMap.containsKey(dependProjectName)){
 												JavaProject parentJavaProject=new JavaProject(this.projectWorkspace,dependProjectName, this.buildOutput);

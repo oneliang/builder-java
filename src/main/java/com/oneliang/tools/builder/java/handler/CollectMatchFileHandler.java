@@ -3,7 +3,7 @@ package com.oneliang.tools.builder.java.handler;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import com.oneliang.Constant;
+import com.oneliang.Constants;
 import com.oneliang.tools.builder.base.BaseHandler;
 import com.oneliang.tools.builder.base.BuildException;
 import com.oneliang.tools.builder.base.BuilderUtil;
@@ -28,7 +28,7 @@ public class CollectMatchFileHandler extends BaseHandler {
 			try{
 				FileOutputStream fileOutputStream=new FileOutputStream(javacSourceListFullFilename);
 				for(String source:sourceFileList){
-					fileOutputStream.write(source.getBytes(Constant.Encoding.UTF8));
+					fileOutputStream.write(source.getBytes(Constants.Encoding.UTF8));
 					if(BuilderUtil.isWindowsOS()){
 						fileOutputStream.write(StringUtil.CRLF);
 					}else{
@@ -39,10 +39,10 @@ public class CollectMatchFileHandler extends BaseHandler {
 				}
 				fileOutputStream.close();
 			}catch(Exception e){
-				logger.error(Constant.Base.EXCEPTION, e);
+				logger.error(Constants.Base.EXCEPTION, e);
 				throw new BuildException(e);
 			}
-			this.configuration.putTemporaryData(this.outputKey, Constant.Symbol.AT+javacSourceListFullFilename);
+			this.configuration.putTemporaryData(this.outputKey, Constants.Symbol.AT+javacSourceListFullFilename);
 		}
 		return true;
 	}
